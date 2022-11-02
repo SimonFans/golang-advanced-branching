@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -82,8 +83,21 @@ func main() {
 
 	// Generate ratings for the different vehicles
 	generateRating()
-	// fmt.Println(vehicleResult)
+	fmt.Println(vehicleResult)
 	// Print ratings for the different vehicles
+}
+
+func showRating(model string) {
+	ratingFound := false
+	for m, r := range vehicleResult {
+		if m == model {
+			fmt.Printf("Total Ratings:%v\tPositive:%v\tNegative:%v\tNeutral:%v", r.feedbackTotal, r.feedbackPositive, r.feedbackNegative, r.feedbackNeutral)
+			ratingFound = true
+		}
+	}
+	if !ratingFound {
+		fmt.Printf("No rating for this vehicle")
+	}
 }
 
 func readJSONFile() Values {
@@ -103,7 +117,7 @@ func readJSONFile() Values {
 }
 
 func generateRating() {
-	var f = readJSONFile()
+	f := readJSONFile()
 	for _, v := range f.Models {
 		var vehResult feedbackResult
 		var vehRating rating
